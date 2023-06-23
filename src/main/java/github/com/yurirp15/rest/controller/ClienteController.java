@@ -29,10 +29,7 @@ public class ClienteController {
                 .orElseThrow( () ->
                         new ResponseStatusException( HttpStatus.NOT_FOUND,
                                 "cliente não encontrado"));
-
-
     }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,7 +45,6 @@ public class ClienteController {
                     clientes.delete(cliente );
                 return cliente;
                 })
-
                 .orElseThrow(() ->new ResponseStatusException( HttpStatus.NOT_FOUND,
                         "cliente não encontrado"));
 
@@ -66,7 +62,8 @@ public class ClienteController {
                     cliente.setId(clienteExistente.getId());
                     clientes.save(cliente);
                     return cliente;
-                }).orElseThrow(() ->new ResponseStatusException( HttpStatus.NOT_FOUND,
+                })
+                 .orElseThrow(() ->new ResponseStatusException( HttpStatus.NOT_FOUND,
                 "cliente não encontrado"));
     }
 
@@ -77,7 +74,6 @@ public class ClienteController {
                                     .matching()
                                     .withIgnoreCase()
                                     .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
-
 
         Example example = Example.of(filtro, matcher);
         return clientes.findAll(example);
