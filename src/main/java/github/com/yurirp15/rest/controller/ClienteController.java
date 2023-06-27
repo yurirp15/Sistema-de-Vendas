@@ -37,6 +37,20 @@ public class ClienteController {
     public Cliente save(@RequestBody @Valid Cliente cliente) {
         return clientes.save(cliente);
     }
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update( @PathVariable Integer id,
+                        @RequestBody @Valid Cliente cliente ) {
+        clientes
+                .findById(id)
+                .map(clienteExistente -> {
+                    cliente.setId(clienteExistente.getId());
+                    clientes.save(cliente);
+                    return cliente;
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "cliente não encontrado"));
+    }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -50,24 +64,6 @@ public class ClienteController {
                         "cliente não encontrado"));
 
     }
-
-
-
-    @PutMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update( @PathVariable Integer id,
-                        @RequestBody Cliente cliente ) {
-         clientes
-                .findById(id)
-                .map( clienteExistente -> {
-                    cliente.setId(clienteExistente.getId());
-                    clientes.save(cliente);
-                    return cliente;
-                })
-                 .orElseThrow(() ->new ResponseStatusException( HttpStatus.NOT_FOUND,
-                "cliente não encontrado"));
-    }
-
 
     @GetMapping
     public List<Cliente> find ( Cliente filtro ){

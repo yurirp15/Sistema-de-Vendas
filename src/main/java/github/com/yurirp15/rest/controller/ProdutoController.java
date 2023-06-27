@@ -8,6 +8,7 @@
     import org.springframework.web.bind.annotation.*;
     import org.springframework.web.server.ResponseStatusException;
 
+    import javax.validation.Valid;
     import java.util.List;
 
     import static org.springframework.http.HttpStatus.*;
@@ -34,8 +35,24 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Produto save(@RequestBody Produto produto) {
+    public Produto save(@RequestBody @Valid Produto produto) {
         return produtos.save(produto);
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void update(@PathVariable Integer id,
+                       @RequestBody @Valid Produto produto) {
+        produtos
+                .findById(id)
+                .map(p -> {
+                    produto.setId(p.getId());
+                    produtos.save(produto);
+                    produtos.save(produto);
+                    return produto;
+                })
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,
+                        "produto não encontrado"));
     }
 
     @DeleteMapping("{id}")
@@ -50,24 +67,6 @@ public class ProdutoController {
                         new ResponseStatusException(NOT_FOUND,
                                 "Produto não encontrado"));
     }
-
-    @PutMapping("{id}")
-    @ResponseStatus(NO_CONTENT)
-    public void update(@PathVariable Integer id,
-                       @RequestBody Produto produto) {
-        produtos
-                .findById(id)
-                .map(p -> {
-                    produto.setId(p.getId());
-                    produtos.save(produto);
-                    produtos.save(produto);
-                    return produto;
-                })
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND,
-                        "produto não encontrado"));
-    }
-
-
 
    @GetMapping
     public List<Produto> find (Produto filtro ){
