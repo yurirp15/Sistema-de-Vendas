@@ -11,7 +11,6 @@ import java.util.Locale;
 @Configuration
 public class InternacionalizacaoConfig {
 
-
     @Bean
     public MessageSource messageSource(){
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -20,8 +19,9 @@ public class InternacionalizacaoConfig {
         messageSource.setDefaultLocale(Locale.getDefault());
         return messageSource;
     }
+
     @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean(){
+    public LocalValidatorFactoryBean validatorFactoryBean(){
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource());
         return bean;
