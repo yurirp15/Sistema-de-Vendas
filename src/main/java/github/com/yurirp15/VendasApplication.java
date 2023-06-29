@@ -17,16 +17,16 @@ public class VendasApplication {
         SpringApplication.run(VendasApplication.class, args);
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration cors = new CorsConfiguration();
-        cors.setAllowedOrigins(Arrays.asList("*"));
-        cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        cors.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-        cors.setExposedHeaders(Arrays.asList("x-auth-token"));
-        // metoto addAllowedOrigin("http://localhost:3000**")
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cors);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource(){
+//        CorsConfiguration cors = new CorsConfiguration();
+//        cors.setAllowedOrigins(Arrays.asList("*"));
+//        cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+//        cors.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+//        cors.setExposedHeaders(Arrays.asList("x-auth-token"));
+//        // metoto addAllowedOrigin("http://localhost:3000**")
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", cors);
+//        return source;
+//    }
 }
