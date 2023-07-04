@@ -1,6 +1,11 @@
 package github.com.yurirp15.security.jwt;
 
 import github.com.yurirp15.service.impl.UsuarioServiceImpl;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -32,9 +37,16 @@ public class JwtAuthFilter  extends OncePerRequestFilter {
             boolean  isValid = jwtService.tokenValido(token);
 
             if(isValid){
-                jwtService.obterLoginUsuario(token);
+                String loginUsuario = jwtService.obterLoginUsuario(token);
+                UserDetails usuario = usuarioService.loadUserByUsername(loginUsuario);
+                UsernamePasswordAuthenticationToken user = new
+                        UsernamePasswordAuthenticationToken(usuario, null,
+                        usuario.getAuthorities());
+                user.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(user);
             }
         }
 
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
