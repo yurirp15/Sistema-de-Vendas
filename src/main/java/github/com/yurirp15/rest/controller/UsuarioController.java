@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping({"/api/usuarios"})
+@RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
 
@@ -34,16 +34,16 @@ public class UsuarioController {
     }
 
     @PostMapping("/auth")
-    public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais) {
-        try {
+    public TokenDTO autenticar( @RequestBody CredenciaisDTO credenciais){
+        try{
             Usuario usuario = Usuario.builder ()
                     .login (credenciais.getLogin ())
                     .senha (credenciais.getSenha ()).build ();
-            UserDetails usuarioAutenticado = usuarioService.autenticar(usuario);
-            String token = jwtService.gerarToken(usuario);
-            return new TokenDTO(usuario.getLogin(), token);
-        } catch (UsernameNotFoundException | SenhaInvalidaExcpetion e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+            UserDetails usuarioAutenticado = usuarioService.autenticar (usuario);
+            String token = jwtService.gerarToken (usuario);
+            return new TokenDTO (usuario.getLogin (), token);
+        }catch (UsernameNotFoundException | SenhaInvalidaExcpetion e){
+            throw new ResponseStatusException (HttpStatus.UNAUTHORIZED, e.getMessage ());
         }
 
     }
